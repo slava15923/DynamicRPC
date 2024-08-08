@@ -26,39 +26,28 @@
     PSTORAGE = 13, //Function local storage, void*</br>
     INTERFUNC = 14,//Storage global for all functions, void*</br>
     RPCSTRUCT = 15 //Rpcstruct</br></h3>
-
+</br>
 <h1>Server API:</h1>
     <h2>header file "rpcserver.h"</h2>
-    <h3>>struct rpcserver* rpcserver_create(uint16_t port);  "allocate and create server at specified port"
-    void rpcserver_start(struct rpcserver* rpcserver);  "create server threads and start it"
-
-    void rpcserver_free(struct rpcserver* serv);        "stop and deallocates server"
-
-    int rpcserver_register_fn(struct rpcserver* serv, void* fn, char* fn_name,
-                            enum rpctypes rtype, enum rpctypes* argstype,
-                            uint8_t argsamm, void* pstorage,int perm);
-    registrate function pointer in server with following things:
-        - fn_name: name of function visible on client side
-        - rtype: function return type
-        - argstype: function prototype array
-        - pstorage: local storage for PSTORAGE type, this storage is only for this function
-        - perm: function permission, -1 is a root perm, if client permission lower than function req server will reject this call
-    Return 0 on success
-    "
-    void rpcserver_unregister_fn(struct rpcserver* serv, char* fn_name); "de-registers following fn"
-    void rpcserver_load_keys(struct rpcserver* serv, char* filename); "Load keys for server with following format ("key"perm) e.g "hello?"123"</h3
+    <h3>struct rpcserver* rpcserver_create(uint16_t port);  "allocate and create server at specified port"</br>
+    void rpcserver_start(struct rpcserver* rpcserver);  "create server threads and start it"</br>
+    void rpcserver_free(struct rpcserver* serv);        "stop and deallocates server"</br>
+    int rpcserver_register_fn(struct rpcserver* serv, void* fn, char* fn_name,</br>
+                            enum rpctypes rtype, enum rpctypes* argstype,</br>
+                            uint8_t argsamm, void* pstorage,int perm);</br></br>
+    registrate function pointer in server with following things:</br>
+        <h4>- fn_name: name of function visible on client side</br>
+        - rtype: function return type</br>
+        - argstype: function prototype array</br>
+        - pstorage: local storage for PSTORAGE type, this storage is only for this function</br>
+        - perm: function permission, -1 is a root perm, if client permission lower than function< req server will reject this call</br>
+    Return 0 on success</br></h4>
+    void rpcserver_unregister_fn(struct rpcserver* serv, char* fn_name); "de-registers following fn"</br>
+    void rpcserver_load_keys(struct rpcserver* serv, char* filename); "Load keys for server with following format ("key"perm) e.g "hello?"123"</h3></br>
 
 
 Client API:
     header file: "rpcclient.h"
-
-    struct rpcret{
-        uint8_t resargs_amm;
-        struct rpctype* resargs; /*args that was resended*/
-        struct rpctype ret; /*libffi limitations support only one ret*/
-    };
-
-
     int rpcserver_connect(char* host,char* key,int portno,struct rpccon* con);
     "
     This functions connects to server at host,portno with key, fd and your perm will be stored into con
